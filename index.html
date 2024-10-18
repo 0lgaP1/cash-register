@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cash register project</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h2>Cash register project</h2>
+
+    <div>
+      <input id="user-input" placeholder="Enter cash from customer" />
+      <p id="results-div"></p>
+      <button>Purchase</button>
+    </div>
+    <div id="app">
+      <div id="cash-register-div">
+        <div id="cash-register-body">
+          <div id="total-value">
+            <p>Total value:</p>
+            <input type="text" />
+          </div>
+          <div id="upper-part">
+            <div class="button-grid">
+              <div class="decorative-button">1</div>
+              <div class="decorative-button">2</div>
+              <div class="decorative-button">3</div>
+
+              <div class="decorative-button">4</div>
+              <div class="decorative-button">5</div>
+              <div class="decorative-button">6</div>
+
+              <div class="decorative-button">7</div>
+              <div class="decorative-button">8</div>
+              <div class="decorative-button">9</div>
+            </div>
+            <div class="upper-register-part">
+              <h3>Change in drawer:</h3>
+              <li>
+                Pennies:
+                <p>$1.01</p>
+              </li>
+              <li>
+                Nickels:
+                <p>$2.05</p>
+              </li>
+              <li>
+                Dimes:
+                <p>$3.1</p>
+              </li>
+              <li>
+                Quarters:
+                <p>$4.25</p>
+              </li>
+              <li>
+                Ones:
+                <p>$90</p>
+              </li>
+              <li>
+                Fives:
+                <p>$55</p>
+              </li>
+              <li>
+                Tens:
+                <p>$20</p>
+              </li>
+              <li>
+                Twenties:
+                <p>$60</p>
+              </li>
+              <li>
+                Hundreds:
+                <p>$100</p>
+              </li>
+            </div>
+          </div>
+
+          <div id="lower-register-part"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
