@@ -6,26 +6,47 @@
 }
 
 #app {
-  display: block;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100vh;
 }
 #total-value {
-  border: 10px solid red;
-  max-width: 300px;
-  margin-left: 40px;
+    display: flex;
+    align-items: center;
+    border: 10px solid rgba(89, 149, 189, 0.853);
+    max-width: 300px;
+    /* margin-left: 40px; */
 }
+
+.outer-border {
+    border: 1px solid black;
+    max-width: 200px;
+}
+
+#total-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 10px solid rgba(89, 149, 189, 0.853);
+    max-width: 200px;
+    background-color: #fff;
+    text-align: center;
+}
+
 
 #neck-cash-drawer {
   height: 30px;
   width: 40px;
-  background-color: red;
+  background-color: rgba(89, 149, 189, 0.853);
   margin-left: 80px;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
 }
 
 #cash-register-body {
-  background-color: #46b0a4;
+  background-color: #fff;
   width: 400px;
   gap: 5px;
   padding: 10px;
@@ -37,18 +58,18 @@
   justify-content: flex-start;
   align-items: flex-start;
   border-radius: 20px 20px 0 0;
-  /* border: 2px solid rgb(173, 14, 14); */
-  background-color: red;
+  background-color:rgba(89, 149, 189, 0.853);
+  border: 1px solid black;
 }
 
 .button-grid {
   padding: 15px;
-
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   margin: 20px;
   justify-content: start;
+  gap: 3px;
 }
 
 .upper-register-part {
@@ -68,18 +89,19 @@ li p {
 .decorative-button {
   width: 30px;
   height: 30px;
-  background-color: #c0c0d8;
+  background-color: #fff;
   border-radius: 10px;
-  border: 2px solid #000;
+  border: 1px solid black;
 }
 
 #lower-register-part {
-  background-color: red;
+  background-color: rgba(89, 149, 189, 0.853);
   width: 100%;
   height: 20px;
   margin-top: 10px;
   position: relative;
   padding: 20px;
+  border: 1px solid black;
 }
 
 #lower-register-part::before {
