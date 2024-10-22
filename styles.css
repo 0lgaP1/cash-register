@@ -107,6 +107,10 @@ li p {
   display: inline;
 }
 
+#change-due {
+  background-color: yellowgreen;
+}
+
 .decorative-button {
   width: 30px;
   height: 30px;
