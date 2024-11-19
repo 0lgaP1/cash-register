@@ -21,7 +21,8 @@ const formatResults = (status, change) => {
   displayChangeDue.innerHTML = `<p>Status: ${status}</p>`;
   displayChangeDue.innerHTML += change
     .map(
-      ([denominationName, amount]) => `<p>${denominationName}: $${amount}</p>`
+      ([denominationName, amount]) =>
+        `<p>${denominationName}: $${amount.toFixed(2)}</p>`
     )
     .join('');
 };
@@ -29,6 +30,7 @@ const formatResults = (status, change) => {
 const checkCashRegister = () => {
   const cashInCents = Math.round(Number(cash.value) * 100);
   const priceInCents = Math.round(price * 100);
+
   if (cashInCents < priceInCents) {
     alert('Customer does not have enough money to purchase the item');
     cash.value = '';
@@ -49,6 +51,7 @@ const checkCashRegister = () => {
       denominationName,
       Math.round(amount * 100)
     ]);
+
   const denominations = [10000, 2000, 1000, 500, 100, 25, 10, 5, 1];
   const result = { status: 'OPEN', change: [] };
   const totalCID = reversedCid.reduce((prev, [_, amount]) => prev + amount, 0);
@@ -60,21 +63,31 @@ const checkCashRegister = () => {
 
   if (totalCID === changeDue) {
     result.status = 'CLOSED';
+    formatResults(
+      result.status,
+      reversedCid.reverse().map(([name, amount]) => [name, amount / 100])
+    );
+    return;
   }
 
   for (let i = 0; i < reversedCid.length; i++) {
     if (changeDue >= denominations[i] && changeDue > 0) {
       const [denominationName, total] = reversedCid[i];
-      const possibleChange = Math.min(total, changeDue);
-      const count = Math.floor(possibleChange / denominations[i]);
-      const amountInChange = count * denominations[i];
-      changeDue -= amountInChange;
+      let amountFromUnit = 0;
 
-      if (count > 0) {
-        result.change.push([denominationName, amountInChange / 100]);
+      while (changeDue >= denominations[i] && total >= amountFromUnit) {
+        changeDue -= denominations[i];
+        changeDue = Math.round(changeDue * 100) / 100; // Normalize
+        amountFromUnit += denominations[i];
+        reversedCid[i][1] -= denominations[i];
+      }
+
+      if (amountFromUnit > 0) {
+        result.change.push([denominationName, amountFromUnit / 100]);
       }
     }
   }
+
   if (changeDue > 0) {
     displayChangeDue.innerHTML = '<p>Status: INSUFFICIENT_FUNDS</p>';
     return;
@@ -91,7 +104,7 @@ const checkResults = () => {
   checkCashRegister();
 };
 
-const updateUI = change => {
+const updateUI = (change) => {
   const currencyNameMap = {
     PENNY: 'Pennies',
     NICKEL: 'Nickels',
@@ -103,14 +116,18 @@ const updateUI = change => {
     TWENTY: 'Twenties',
     'ONE HUNDRED': 'Hundreds'
   };
-  // Update cid if change is passed in
+
   if (change) {
     change.forEach(([changeDenomination, changeAmount]) => {
       const targetArr = cid.find(
-        ([denominationName, _]) => denominationName === changeDenomination
+        ([denominationName]) => denominationName === changeDenomination
       );
-      targetArr[1] =
-        (Math.round(targetArr[1] * 100) - Math.round(changeAmount * 100)) / 100;
+      if (targetArr) {
+        targetArr[1] =
+          (Math.round(targetArr[1] * 100) -
+            Math.round(changeAmount * 100)) /
+          100;
+      }
     });
   }
 
@@ -122,16 +139,18 @@ const updateUI = change => {
         ([denominationName, amount]) =>
           `<p>${currencyNameMap[denominationName]}: $${amount}</p>`
       )
-      .join('')}
-  `;
+      .join('')}`;
 };
 
 purchaseBtn.addEventListener('click', checkResults);
 
-cash.addEventListener('keydown', e => {
+cash.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     checkResults();
   }
 });
 
 updateUI();
+
+// 12. When price is 3.26, the value in the #cash element is 100, cid is [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]], and the #purchase-btn element is clicked, the value in the #change-due element should be "Status: OPEN TWENTY: $60 TEN: $20 FIVE: $15 ONE: $1 QUARTER: $0.5 DIME: $0.2 PENNY: $0.04".
+// Failed:13. When price is less than the value in the #cash element, total cash in drawer cid is greater than the change due, individual denomination amounts allows for returning change due, and the #purchase-btn element is clicked, the value in the #change-due element should be "Status: OPEN" with required change due in coins and bills sorted in highest to lowest order.
